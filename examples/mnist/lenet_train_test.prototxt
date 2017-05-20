@@ -1,4 +1,14 @@
 name: "LeNet"
+# layer {
+#   type: "Python"
+#   name: "data"
+#   top: "data"
+#   top: "label"
+#   python_param {
+#     module: 'data_layer'
+#     layer: 'RoIDataLayer'
+#   }
+# }
 layer {
   name: "mnist"
   type: "Data"

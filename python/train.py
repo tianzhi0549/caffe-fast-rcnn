@@ -13,11 +13,13 @@ def train(
         gpus,  # list of device ids
         timing=False,  # show timing info for compute and communications
 ):
+    # caffe.set_mode_gpu()
+    # caffe.set_device(1)
     # NCCL uses a uid to identify a session
     uid = caffe.NCCL.new_uid()
 
-    caffe.init_log()
-    caffe.log('Using devices %s' % str(gpus))
+    # caffe.init_log()
+    # caffe.log('Using devices %s' % str(gpus))
 
     procs = []
     for rank in range(len(gpus)):
@@ -96,5 +98,4 @@ if __name__ == '__main__':
                         help="List of device ids.")
     parser.add_argument("--timing", action='store_true', help="Show timing info.")
     args = parser.parse_args()
-
     train(args.solver, args.snapshot, args.gpus, args.timing)

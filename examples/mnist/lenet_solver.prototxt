@@ -23,3 +23,5 @@ snapshot: 5000
 snapshot_prefix: "examples/mnist/lenet"
 # solver mode: CPU or GPU
 solver_mode: GPU
+# layer_wise_reduce: true
+random_seed: 1701
