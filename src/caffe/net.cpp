@@ -592,7 +592,8 @@ void Net<Dtype>::ForwardDebugInfo(const int layer_id) {
         << "    [Forward] "
         << "Layer " << layer_names_[layer_id]
         << ", top blob " << blob_name
-        << " data: " << data_abs_val_mean;
+        << " data: " << data_abs_val_mean
+        << "shape: " << blob.shape_string();
   }
   for (int param_id = 0; param_id < layers_[layer_id]->blobs().size();
        ++param_id) {
@@ -744,7 +745,7 @@ void Net<Dtype>::CopyTrainedLayersFrom(const NetParameter& param) {
       LOG(INFO) << "Ignoring source layer " << source_layer_name;
       continue;
     }
-    DLOG(INFO) << "Copying source layer " << source_layer_name;
+    LOG(INFO) << "Copying source layer " << source_layer_name;
     vector<shared_ptr<Blob<Dtype> > >& target_blobs =
         layers_[target_layer_id]->blobs();
     CHECK_EQ(target_blobs.size(), source_layer.blobs_size())
@@ -799,7 +800,7 @@ void Net<Dtype>::CopyTrainedLayersFromHDF5(const string trained_filename) {
       continue;
     }
     int target_layer_id = layer_names_index_[source_layer_name];
-    DLOG(INFO) << "Copying source layer " << source_layer_name;
+    LOG(INFO) << "Copying source layer " << source_layer_name;
     vector<shared_ptr<Blob<Dtype> > >& target_blobs =
         layers_[target_layer_id]->blobs();
     hid_t layer_hid = H5Gopen2(data_hid, source_layer_name.c_str(),

@@ -3,8 +3,8 @@
 Trains a model using one or more GPUs.
 """
 from multiprocessing import Process
-
-import caffe
+from time import sleep
+import caffe, sys
 
 
 def train(
@@ -17,6 +17,7 @@ def train(
     # caffe.set_device(1)
     # NCCL uses a uid to identify a session
     uid = caffe.NCCL.new_uid()
+    print uid
 
     # caffe.init_log()
     # caffe.log('Using devices %s' % str(gpus))
@@ -83,9 +84,13 @@ def solve(proto, snapshot, gpus, timing, uid, rank):
     else:
         solver.add_callback(nccl)
 
-    if solver.param.layer_wise_reduce:
-        solver.net.after_backward(nccl)
-    solver.step(solver.param.max_iter)
+    # if solver.param.layer_wise_reduce:
+    #     solver.net.after_backward(nccl)
+    while solver.iter < solver.param.max_iter:
+        solver.step(100)
+        sys.stderr.write("rank: {} iter: {}\n".format(rank, solver.iter))
+        if rank == 1:
+            sleep(1)
 
 
 if __name__ == '__main__':
